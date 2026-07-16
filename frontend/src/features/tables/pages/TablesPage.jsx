@@ -5,7 +5,7 @@ import { useOrderStore } from '../../orders/store/useOrderStore'
 import OrderCreationDrawer from '../../orders/components/OrderCreationDrawer'
 import {
   FiPlus, FiShoppingCart, FiTrash2, FiRefreshCw, FiUsers, FiMapPin,
-  FiChevronRight, FiGrid, FiUser,
+  FiChevronRight, FiGrid, FiUser, FiCheckCircle,
 } from 'react-icons/fi'
 import Drawer from '../../../shared/components/Drawer'
 import Button from '../../../shared/components/Button'
@@ -153,7 +153,7 @@ function TableCard({ table, isAdmin, canTakeOrders, onOrder }) {
 
         {/* Botón CTA */}
         {canTakeOrders && (
-          <div className="mt-3">
+          <div className="mt-3 space-y-2">
             {table.status === 'free' && (
               <div
                 onClick={(e) => { e.stopPropagation(); onOrder(table) }}
@@ -168,16 +168,40 @@ function TableCard({ table, isAdmin, canTakeOrders, onOrder }) {
               </div>
             )}
             {table.status === 'occupied' && (
+              <>
+                <div
+                  onClick={(e) => { e.stopPropagation(); onOrder(table) }}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl
+                    bg-rose-600 text-white border border-rose-600
+                    hover:bg-rose-700 hover:border-rose-700
+                    font-semibold text-sm transition-all"
+                >
+                  <FiShoppingCart size={16} />
+                  Tomar Pedido
+                  <FiChevronRight size={16} className="ml-auto opacity-50" />
+                </div>
+                <div
+                  onClick={(e) => { e.stopPropagation(); useTableStore.getState().cleanTable(table.id) }}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl
+                    bg-sky-600 text-white border border-sky-600
+                    hover:bg-sky-700 hover:border-sky-700
+                    font-semibold text-sm transition-all"
+                >
+                  <FiRefreshCw size={16} />
+                  Limpiar
+                </div>
+              </>
+            )}
+            {table.status === 'cleaning' && (
               <div
-                onClick={(e) => { e.stopPropagation(); onOrder(table) }}
+                onClick={(e) => { e.stopPropagation(); useTableStore.getState().freeTable(table.id) }}
                 className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl
-                  bg-rose-600 text-white border border-rose-600
-                  hover:bg-rose-700 hover:border-rose-700
+                  bg-emerald-600 text-white border border-emerald-600
+                  hover:bg-emerald-700 hover:border-emerald-700
                   font-semibold text-sm transition-all"
               >
-                <FiShoppingCart size={16} />
-                Tomar Pedido
-                <FiChevronRight size={16} className="ml-auto opacity-50" />
+                <FiCheckCircle size={16} />
+                Lista para usar
               </div>
             )}
           </div>

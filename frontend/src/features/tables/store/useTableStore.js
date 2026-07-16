@@ -32,6 +32,13 @@ export const useTableStore = create((set) => ({
     return data
   },
 
+  cleanTable: async (id) => {
+    const { data } = await api.post(`/tables/${id}/start_cleaning/`)
+    set((s) => ({ tables: s.tables.map((t) => (t.id === id ? data : t)) }))
+    toast.success('Mesa marcada en limpieza')
+    return data
+  },
+
   createTable: async (tableData) => {
     const { data } = await api.post('/tables/', tableData)
     set((s) => ({ tables: [...s.tables, data] }))
