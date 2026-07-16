@@ -6,6 +6,7 @@ import Drawer from '../../../shared/components/Drawer'
 import Button from '../../../shared/components/Button'
 import StatusBadge from '../../../shared/components/StatusBadge'
 import { formatCurrency, formatDate } from '../../../shared/utils/formatters'
+import generateBillPdf from '../../../shared/utils/generateBillPdf'
 import {
   FiDollarSign, FiCheckCircle, FiPrinter, FiRefreshCw,
   FiClipboard, FiClock, FiUser, FiChevronRight,
@@ -224,7 +225,7 @@ function BillDrawer({ order, onClose, onGenerate }) {
         </div>
 
         <Button
-          onClick={() => onGenerate(order.id)}
+          onClick={() => onGenerate(order)}
           className="w-full flex items-center justify-center gap-2"
         >
           <FiPrinter size={16} />
@@ -423,9 +424,11 @@ export default function CashierPage() {
     return table?.number || tableId
   }
 
-  const handleGenerateBill = async (orderId) => {
+  const handleGenerateBill = async (order) => {
+    if (!order?.id) return
     try {
-      await generateBill(orderId)
+      await generateBill(order.id)
+      generateBillPdf(order)
       setSelectedOrder(null)
       fetchOrders({ status: 'delivered' })
       fetchBills({ status: 'pending' })
