@@ -34,10 +34,6 @@ export default function LoginPage() {
         <div className="flex justify-center mb-2">
           <img src="/logo.png" alt="Pizzería El Patio" className="h-16 sm:h-20 w-auto" />
         </div>
-        <p className="text-xs sm:text-sm text-center text-gray-400 mb-6 sm:mb-8">
-          {SERVER_URL || 'Conectando...'}
-        </p>
-
         <div className="mb-4 sm:mb-5">
           <label className="block text-sm font-medium text-gray-300 mb-1.5">Usuario</label>
           <input
