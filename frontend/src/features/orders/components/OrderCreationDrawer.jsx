@@ -174,6 +174,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
             </Button>
           </div>
         ) : (
+        <>
         {/* ── Pedido existente ── */}
         {existingOrder && existingOrder.items && existingOrder.items.length > 0 && (
           <div className="mb-4 rounded-xl border border-gray-600 bg-gray-800/50 overflow-hidden">
@@ -408,6 +409,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
             </p>
           </div>
         )}
+        </>
         )}
       </Drawer>
 
