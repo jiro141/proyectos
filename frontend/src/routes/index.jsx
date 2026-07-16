@@ -8,6 +8,7 @@ import TablesPage from '../features/tables/pages/TablesPage'
 import WaiterOrdersPage from '../features/orders/pages/WaiterOrdersPage'
 import KitchenPage from '../features/orders/pages/KitchenPage'
 import CashierPage from '../features/billing/pages/CashierPage'
+import WelcomePage from '../features/dashboard/pages/WelcomePage'
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, isAuthenticated } = useAuthStore()
@@ -25,7 +26,7 @@ export default function AppRoutes() {
       <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
 
       <Route path="/" element={<DashboardLayout />}>
-        <Route index element={<Navigate to="/mesas" replace />} />
+        <Route index element={<WelcomePage />} />
         <Route path="menu" element={
           <ProtectedRoute allowedRoles={['admin']}><MenuPage /></ProtectedRoute>
         } />
