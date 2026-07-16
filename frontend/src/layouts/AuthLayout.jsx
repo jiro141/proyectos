@@ -6,7 +6,7 @@ export default function AuthLayout({ children }) {
   if (isAuthenticated) return <Navigate to="/" replace />
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
+    <div >
       {children}
     </div>
   )
