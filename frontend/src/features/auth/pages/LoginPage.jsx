@@ -23,8 +23,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full max-w-sm sm:max-w-md">
-      <form onSubmit={handleSubmit} className="bg-gray-800 p-6 sm:p-8 md:p-10 rounded-lg shadow-md border border-gray-700">
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-[url('/fondo.jpeg')] relative">
+      {/* Capa oscura para que el formulario se lea bien */}
+      <div className="absolute inset-0 bg-black/60" />
+
+      <div className="relative z-10 w-full max-w-sm sm:max-w-md">
+        <form onSubmit={handleSubmit} className="bg-gray-800/90 backdrop-blur-sm p-6 sm:p-8 md:p-10 rounded-lg shadow-md border border-gray-700">
         <div className="flex justify-center mb-2">
           <img src="/logo.png" alt="Pizzería El Patio" className="h-16 sm:h-20 w-auto" />
         </div>
@@ -63,6 +67,7 @@ export default function LoginPage() {
           {loading ? 'Ingresando...' : 'Ingresar'}
         </button>
       </form>
+      </div>
     </div>
   )
 }
