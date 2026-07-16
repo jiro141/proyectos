@@ -67,8 +67,8 @@ export default function DashboardLayout() {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-4 py-5">
-        <h2 className="text-xl font-bold text-primary-400">El Patio</h2>
+      <div className="flex items-center justify-between px-4 py-4">
+        <img src="/logo.png" alt="El Patio" className="h-10 w-auto" />
         <button
           onClick={() => setSidebarOpen(false)}
           className="lg:hidden p-1 rounded-lg hover:bg-gray-700 text-gray-400"

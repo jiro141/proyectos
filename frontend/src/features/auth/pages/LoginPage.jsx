@@ -25,9 +25,9 @@ export default function LoginPage() {
   return (
     <div className="w-full max-w-sm sm:max-w-md">
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 sm:p-8 md:p-10 rounded-lg shadow-md border border-gray-700">
-        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-1 text-primary-500">
-          Pizzería El Patio
-        </h1>
+        <div className="flex justify-center mb-2">
+          <img src="/logo.png" alt="Pizzería El Patio" className="h-16 sm:h-20 w-auto" />
+        </div>
         <p className="text-xs sm:text-sm text-center text-gray-400 mb-6 sm:mb-8">
           {SERVER_URL || 'Conectando...'}
         </p>
