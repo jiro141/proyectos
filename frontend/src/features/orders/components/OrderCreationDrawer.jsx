@@ -5,6 +5,7 @@ import { useTableStore } from '../../tables/store/useTableStore'
 import Drawer from '../../../shared/components/Drawer'
 import Button from '../../../shared/components/Button'
 import Modal from '../../../shared/components/Modal'
+import ConfirmDialog from '../../../shared/components/ConfirmDialog'
 import { formatCurrency } from '../../../shared/utils/formatters'
 import { FiPlus, FiMinus, FiShoppingCart, FiSend, FiClock, FiSearch, FiX, FiCheckCircle, FiRefreshCw, FiTrash2 } from 'react-icons/fi'
 import toast from 'react-hot-toast'
@@ -19,7 +20,13 @@ const ORDER_STATUS = {
 
 export default function OrderCreationDrawer({ isOpen, onClose, table, existingOrder, onSuccess, dark }) {
   const { categories, items, fetchMenu } = useMenuStore()
-  const { createOrder, addItem } = useOrderStore()
+  const { createOrder, addItem, removeItem } = useOrderStore()
+
+  // Suscripción al store para actualización en tiempo real del pedido
+  const liveOrder = useOrderStore(
+    (s) => s.orders.find((o) => o.id === existingOrder?.id)
+  )
+  const order = liveOrder || existingOrder
 
   const [cart, setCart] = useState([])
   const [activeCategory, setActiveCategory] = useState(null)
@@ -27,15 +34,16 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
   const [notesText, setNotesText] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [confirmDeleteItem, setConfirmDeleteItem] = useState(null)
 
   const existingTotal = useMemo(() => {
-    if (!existingOrder?.items) return 0
-    return existingOrder.items.reduce(
+    if (!order?.items) return 0
+    return order.items.reduce(
       (sum, item) => sum + parseFloat(item.unit_price || 0) * item.quantity, 0
     )
-  }, [existingOrder])
+  }, [order])
 
-  const orderStatus = existingOrder ? ORDER_STATUS[existingOrder.status] || ORDER_STATUS.pending : null
+  const orderStatus = order ? ORDER_STATUS[order.status] || ORDER_STATUS.pending : null
 
   useEffect(() => {
     if (isOpen && table) {
@@ -146,6 +154,13 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
     }
   }
 
+  const handleConfirmDelete = async () => {
+    if (!confirmDeleteItem) return
+    await removeItem(confirmDeleteItem.orderId, confirmDeleteItem.itemId)
+    setConfirmDeleteItem(null)
+    onSuccess?.()
+  }
+
   return (
     <>
       <Drawer
@@ -176,13 +191,13 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
         ) : (
         <>
         {/* ── Pedido existente ── */}
-        {existingOrder && existingOrder.items && existingOrder.items.length > 0 && (
+        {order && order.items && order.items.length > 0 && (
           <div className="mb-4 rounded-xl border border-gray-600 bg-gray-800/50 overflow-hidden">
             <div className="flex items-center justify-between px-3 py-2 bg-gray-700/50 border-b border-gray-600">
               <div className="flex items-center gap-2">
                 <FiClock size={14} className="text-gray-400" />
                 <span className="text-sm font-semibold text-gray-200">
-                  Pedido #{existingOrder.id}
+                  Pedido #{order.id}
                 </span>
               </div>
               {orderStatus && (
@@ -192,7 +207,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
               )}
             </div>
             <div className="divide-y divide-gray-700/50">
-              {existingOrder.items.map(item => (
+              {order.items.map(item => (
                 <div key={item.id} className="flex items-center justify-between px-3 py-1.5 group">
                   <span className="text-sm text-gray-300">
                     <strong className="text-gray-200">{item.quantity}x</strong> {item.item_name}
@@ -204,7 +219,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
-                        useOrderStore.getState().removeItem(existingOrder.id, item.id)
+                        setConfirmDeleteItem({ orderId: order.id, itemId: item.id, itemName: item.item_name })
                       }}
                       className="p-1 text-gray-600 hover:text-red-400 hover:bg-red-900/20 rounded transition-colors opacity-0 group-hover:opacity-100"
                       title="Eliminar item"
@@ -417,13 +432,27 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
           <div className={`text-center py-8 ${dark ? 'text-gray-500' : 'text-gray-400'}`}>
             <FiShoppingCart size={32} className="mx-auto mb-2" />
             <p className="text-sm">
-              {existingOrder ? 'Agregá más productos al pedido' : 'Seleccioná productos del menú'}
+              {order ? 'Agregá más productos al pedido' : 'Seleccioná productos del menú'}
             </p>
           </div>
         )}
         </>
         )}
       </Drawer>
+
+      <ConfirmDialog
+        isOpen={!!confirmDeleteItem}
+        onClose={() => setConfirmDeleteItem(null)}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar item"
+        message={
+          confirmDeleteItem
+            ? `¿Eliminar "${confirmDeleteItem.itemName}" del pedido?`
+            : ''
+        }
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+      />
 
       <Modal
         isOpen={!!notesModal}
