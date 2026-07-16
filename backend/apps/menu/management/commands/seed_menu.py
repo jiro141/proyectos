@@ -183,32 +183,31 @@ def parse_versions(text):
     Parsea las versiones de un producto.
     Formato:
     - Pequeña | Precio: 18.000
+    - Mediana | Precio: 31.000
     """
     versions = []
 
-    # Buscar sección Versiones:
-    vs_match = re.search(
-        r'Versiones\s*:\s*(.+?)(?=\n\s*\n\s*(?:Adicional|Adicional\s+opcional|NOTA|\Z|\.))',
-        text,
-        re.IGNORECASE | re.DOTALL,
-    )
-    if not vs_match:
-        # Buscar versión más suelta
-        vs_match = re.search(r'Versiones\s*:\s*(.+)', text, re.IGNORECASE)
-    if not vs_match:
+    # Buscar "Versiones:" en el texto
+    idx = text.lower().find('versiones:')
+    if idx == -1:
         return versions
 
-    vs_text = vs_match.group(1).strip()
+    # Tomar todo desde "Versiones:" hasta el final del bloque
+    after_versions = text[idx + 10:]
 
-    for line in vs_text.split('\n'):
+    # Recorrer línea por línea, solo las que empiezan con "-"
+    for line in after_versions.split('\n'):
         line = line.strip()
-        if not line.startswith('-'):
-            continue
         m = re.match(r'-\s*(.+?)\s*\|\s*Precio\s*:\s*([\d.]+)', line)
         if m:
             vname = m.group(1).strip()
             vprice = parse_price(m.group(2))
             versions.append({'name': vname, 'price': vprice})
+        elif line and not line.startswith('-') and not line.startswith('Ingredientes') and not line.startswith('Adicional'):
+            # Si encontramos una línea que no es versión ni ingrediente ni adicional, terminamos
+            # (esto evita capturar PRODUCTO: siguiente como versión)
+            if not line.startswith('NOTA'):
+                break
 
     return versions
 
