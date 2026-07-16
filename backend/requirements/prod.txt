@@ -1,0 +1,4 @@
+-r base.txt
+gunicorn>=21.2,<22.0
+whitenoise>=6.9,<7.0
+mysqlclient>=2.2,<3.0

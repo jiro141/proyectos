@@ -1,0 +1,37 @@
+# ─── Python ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+*.egg
+.venv/
+venv/
+
+# ─── Django ─────────────────────────────────────────────────────────────
+backend/staticfiles/
+backend/media/
+backend/*.sqlite3
+backend/.env
+backend/firebase-credentials.json
+
+# ─── Node / Frontend ────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/android/.gradle/
+frontend/android/build/
+frontend/android/app/build/
+frontend/android/local.properties
+frontend/.env
+
+# ─── IDE ────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+
+# ─── Windows reserved names / junk ────────────────────────────────────
+nul
+NUL
+Nul
+*.swp
+*.swo
+*~
+.DS_Store

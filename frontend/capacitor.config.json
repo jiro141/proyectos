@@ -1,0 +1,10 @@
+{
+  "appId": "com.pizzeria.elpatio",
+  "appName": "Pizzería El Patio",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "http",
+    "cleartext": true
+  }
+}
