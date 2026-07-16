@@ -1,0 +1,381 @@
+MENÚ EL PATIO PIZZAS - LEÑA
+Precios y versiones transcritos del menú suministrado.
+
+==================================================
+CATEGORÍA: PIZZAS
+==================================================
+
+PRODUCTO: LA PATIO
+Ingredientes: salsa, queso, champiñones, maíz, pimentón, jamón, tocineta y cebolla.
+Versiones:
+- Pequeña | Precio: 18.000
+- Mediana | Precio: 31.000
+- Grande | Precio: 46.000
+
+PRODUCTO: VEGETARIANA
+Ingredientes: salsa, queso, champiñones, maíz, pimentón, aceitunas y cebolla.
+Versiones:
+- Pequeña | Precio: 15.000
+- Mediana | Precio: 28.000
+- Grande | Precio: 41.000
+
+PRODUCTO: NAPOLITANA
+Ingredientes: salsa, queso y jamón.
+Versiones:
+- Pequeña | Precio: 15.000
+- Mediana | Precio: 28.000
+- Grande | Precio: 35.000
+
+PRODUCTO: CAPRESA
+Ingredientes: salsa, queso, orégano y tomate.
+Versiones:
+- Pequeña | Precio: 15.000
+- Mediana | Precio: 28.000
+- Grande | Precio: 35.000
+
+PRODUCTO: MARGARITA
+Ingredientes: salsa y queso.
+Versiones:
+- Pequeña | Precio: 13.000
+- Mediana | Precio: 24.000
+- Grande | Precio: 30.000
+
+PRODUCTO: HAWAIANA
+Ingredientes: jamón, queso y piña caramelizada.
+Versiones:
+- Pequeña | Precio: 15.000
+- Mediana | Precio: 28.000
+- Grande | Precio: 35.000
+
+PRODUCTO: CARBONARA
+Ingredientes: salsa blanca, queso, pollo, tocineta, maíz y champiñones.
+Versiones:
+- Pequeña | Precio: 19.000
+- Mediana | Precio: 36.000
+- Grande | Precio: 48.000
+
+PRODUCTO: MARINERA
+Ingredientes: salsa, queso, camarones, cebolla y pimentón.
+Versiones:
+- Pequeña | Precio: 24.000
+- Mediana | Precio: 45.000
+- Grande | Precio: 65.000
+
+PRODUCTO: CHORIZO
+Ingredientes: salsa, queso, chorizo, pimentón y cebolla.
+Versiones:
+- Pequeña | Precio: 16.000
+- Mediana | Precio: 30.000
+- Grande | Precio: 40.000
+
+PRODUCTO: 3 QUESOS
+Ingredientes: salsa, queso mozzarella, queso parmesano y queso amarillo.
+Versiones:
+- Pequeña | Precio: 15.000
+- Mediana | Precio: 28.000
+- Grande | Precio: 38.000
+
+PRODUCTO: DE LA CASA
+Ingredientes: salsa, queso, carne molida, cebolla, pimentón y anchoas.
+Versiones:
+- Pequeña | Precio: 17.000
+- Mediana | Precio: 32.000
+- Grande | Precio: 42.000
+
+PRODUCTO: PEPPERONI
+Ingredientes: salsa, queso, pepperoni, pimentón y cebolla.
+Versiones:
+- Pequeña | Precio: 17.000
+- Mediana | Precio: 32.000
+- Grande | Precio: 45.000
+
+PRODUCTO: ESPECIAL
+Ingredientes: jamón, queso, salami, anchoas, cebolla y pimentón.
+Versiones:
+- Pequeña | Precio: 18.000
+- Mediana | Precio: 34.000
+- Grande | Precio: 46.000
+
+PRODUCTO: EMBUTIDO
+Ingredientes: jamón, queso, pepperoni, salami, tocineta y chorizo.
+Versiones:
+- Pequeña | Precio: 20.000
+- Mediana | Precio: 38.000
+- Grande | Precio: 50.000
+
+PRODUCTO: CRIOLLA
+Ingredientes: queso, pollo, maíz, cebolla y pimentón.
+Versiones:
+- Pequeña | Precio: 17.000
+- Mediana | Precio: 32.000
+- Grande | Precio: 42.000
+
+PRODUCTO: TROPICAL
+Ingredientes: tocineta, queso y piña caramelizada.
+Versiones:
+- Pequeña | Precio: 13.000
+- Mediana | Precio: 24.000
+- Grande | Precio: 28.000
+
+
+==================================================
+CATEGORÍA: TAPAS
+==================================================
+
+PRODUCTO: DEDOS DE POLLO
+Ingredientes: no especificados en el menú.
+Versiones:
+- Porción | Precio: 12.000
+
+PRODUCTO: MINI CROQUETAS DE POLLO
+Ingredientes: no especificados en el menú.
+Versiones:
+- Porción | Precio: 12.000
+
+PRODUCTO: TEQUEÑOS
+Ingredientes: no especificados en el menú.
+Versiones:
+- Porción | Precio: 12.000
+
+
+==================================================
+CATEGORÍA: PIZZAS DE CARNES
+==================================================
+
+PRODUCTO: PIZZA DE CARNE MECHADA
+Ingredientes: salsa, queso y carne mechada. Incluye 3 adicionales a elegir entre champiñones, maíz, aceitunas, anchoas, cebolla, jamón y pimentón.
+Versiones:
+- Pequeña | Precio: 19.000
+- Mediana | Precio: 37.000
+- Grande | Precio: 49.000
+
+PRODUCTO: PIZZA DE POLLO
+Ingredientes: salsa, queso y pollo. Incluye 3 adicionales a elegir entre champiñones, maíz, aceitunas, anchoas, cebolla, jamón y pimentón.
+Versiones:
+- Pequeña | Precio: 19.000
+- Mediana | Precio: 37.000
+- Grande | Precio: 49.000
+
+PRODUCTO: PIZZA DE PERNIL
+Ingredientes: salsa, queso y pernil. Incluye 3 adicionales a elegir entre champiñones, maíz, aceitunas, anchoas, cebolla, jamón y pimentón.
+Versiones:
+- Pequeña | Precio: 19.000
+- Mediana | Precio: 37.000
+- Grande | Precio: 49.000
+
+PRODUCTO: PIZZA DE CARNE MOLIDA
+Ingredientes: salsa, queso y carne molida. Incluye 3 adicionales a elegir entre champiñones, maíz, aceitunas, anchoas, cebolla, jamón y pimentón.
+Versiones:
+- Pequeña | Precio: 19.000
+- Mediana | Precio: 37.000
+- Grande | Precio: 49.000
+
+
+==================================================
+CATEGORÍA: PIZZAS BARBACOA
+==================================================
+
+PRODUCTO: PIZZA BARBACOA DE CERDO
+Ingredientes: salsa, queso, cebolla, pimentón, mozzarella, parmesano y asado de cerdo.
+Versiones:
+- Pequeña | Precio: 20.000
+- Mediana | Precio: 38.000
+- Grande | Precio: 50.000
+
+PRODUCTO: PIZZA BARBACOA DE LOMO
+Ingredientes: salsa, queso, cebolla, pimentón, mozzarella, parmesano y asado de lomo.
+Versiones:
+- Pequeña | Precio: 20.000
+- Mediana | Precio: 38.000
+- Grande | Precio: 50.000
+
+PRODUCTO: PIZZA BARBACOA DE POLLO
+Ingredientes: salsa, queso, cebolla, pimentón, mozzarella, parmesano y asado de pollo.
+Versiones:
+- Pequeña | Precio: 20.000
+- Mediana | Precio: 38.000
+- Grande | Precio: 50.000
+
+
+==================================================
+CATEGORÍA: ENSALADAS
+==================================================
+
+PRODUCTO: ENSALADA CÉSAR
+Ingredientes: no especificados en el menú.
+Versiones:
+- Tradicional | Precio: 11.000
+- Con pollo | Precio: 21.000
+- Con lomo | Precio: 21.000
+- Con cerdo | Precio: 21.000
+
+
+==================================================
+CATEGORÍA: ALAS CRISPY
+==================================================
+
+PRODUCTO: ALAS CRISPY
+Ingredientes: alas crispy, ensalada César y papas a la francesa.
+Versiones:
+- Porción | Precio: 27.000
+
+
+==================================================
+CATEGORÍA: BROCHETAS
+==================================================
+
+PRODUCTO: BROCHETAS
+Todas las versiones incluyen ensalada César y papas a la francesa.
+Versiones:
+- Pollo | Precio: 27.000
+- Carne | Precio: 27.000
+- Mixtas | Precio: 29.000
+- Cerdo agridulce | Precio: 27.000
+
+
+==================================================
+CATEGORÍA: ALAS
+==================================================
+
+PRODUCTO: ALITAS BÚFALO
+Ingredientes: alitas con preparación estilo búfalo, ensalada César y papas a la francesa.
+Versiones:
+- Tradicionales | Precio: 24.000
+- Horneadas | Precio: 24.000
+
+
+==================================================
+CATEGORÍA: HAMBURGUESAS CLÁSICAS
+==================================================
+
+PRODUCTO: HAMBURGUESA CLÁSICA
+Ingredientes: jamón, queso, lechuga y tomate.
+Versiones:
+- Pollo mechado | Precio: 15.000
+- Carne mechada | Precio: 15.000
+- Croqueta | Precio: 15.000
+- Pernil | Precio: 15.000
+Adicional:
+- Papas a la francesa | Precio: 5.000
+
+
+==================================================
+CATEGORÍA: HAMBURGUESA POLLO CRISPY
+==================================================
+
+PRODUCTO: HAMBURGUESA DE POLLO CRISPY
+Ingredientes: pechuga empanizada, ensalada César, queso amarillo y tocineta.
+Versiones:
+- Pollo crispy | Precio: 25.000
+
+
+==================================================
+CATEGORÍA: HAMBURGUESAS A LAS BRASAS
+==================================================
+
+PRODUCTO: HAMBURGUESA A LAS BRASAS
+Ingredientes: tocineta, queso fundido, lechuga, tomate, cebolla caramelizada y huevo frito.
+Versiones:
+- Pollo | Precio: 21.000
+- Cerdo | Precio: 21.000
+- Lomo | Precio: 21.000
+- Croqueta | Precio: 21.000
+
+
+==================================================
+CATEGORÍA: PLATOS
+==================================================
+
+PRODUCTO: LOMO PLATO
+Ingredientes: solomo, ensalada César y papas francesas.
+Versiones:
+- Plato individual | Precio: 27.000
+
+PRODUCTO: POLLO PLATO
+Ingredientes: pechuga de pollo, ensalada César y papas francesas.
+Versiones:
+- Plato individual | Precio: 27.000
+
+PRODUCTO: CERDO PLATO
+Ingredientes: cerdo, ensalada César y papas francesas.
+Versiones:
+- Plato individual | Precio: 27.000
+
+PRODUCTO: PLATO MIXTO
+Ingredientes: solomo, pollo, lomo de cerdo, ensalada César y papas a la francesa.
+Versiones:
+- Plato individual | Precio: 28.000
+
+PRODUCTO: PLATO CRISPY
+Ingredientes: pollo crispy, ensalada César y papas a la francesa.
+Versiones:
+- Plato individual | Precio: 28.000
+
+
+==================================================
+CATEGORÍA: TABLAS
+==================================================
+
+PRODUCTO: TABLA CRISPY
+Ingredientes: alas, croquetas de pollo, nuggets de pollo, dedos de pollo, papas a la francesa y ensalada César.
+Versiones:
+- Media | Precio: 48.000
+- Completa | Precio: 70.000
+
+PRODUCTO: TABLA ASADA
+Ingredientes: pollo asado, lomo de cerdo, solomo, chorizo, ensalada César y papas.
+Versiones:
+- Media | Precio: 52.000
+- Completa | Precio: 75.000
+
+
+==================================================
+CATEGORÍA: SALCHIPAPA A LAS BRASAS
+==================================================
+
+PRODUCTO: SALCHIPAPA A LAS BRASAS
+Ingredientes: papas francesas, queso, salchicha, tocineta y maíz.
+Versiones:
+- Con lomo de cerdo | Precio: 27.000
+- Con pollo a la brasa | Precio: 27.000
+- Con lomo de res | Precio: 27.000
+- Con pollo crispy | Precio: 27.000
+
+
+==================================================
+CATEGORÍA: SALCHIPAPAS
+==================================================
+
+PRODUCTO: SALCHIPAPA
+Versiones:
+- Normal: papas a la francesa y salchicha | Precio: 14.000
+- Con pernil: papas a la francesa, salchicha y pernil | Precio: 18.000
+- Con carne mechada: papas a la francesa, salchicha y carne mechada | Precio: 18.000
+- Con pollo: papas a la francesa, salchicha y pollo | Precio: 18.000
+
+
+==================================================
+CATEGORÍA: PASTICHO
+==================================================
+
+PRODUCTO: PASTICHO
+Ingredientes: no especificados en el menú.
+Versiones:
+- Porción | Precio: 18.000
+
+
+==================================================
+CATEGORÍA: PASTAS
+==================================================
+
+PRODUCTO: PASTAS
+Ingredientes: no especificados en el menú.
+Versiones:
+- Porción | Precio: 18.000
+
+
+==================================================
+NOTA
+==================================================
+
+Todo envase de comida para llevar tiene un valor adicional no especificado en el menú.
