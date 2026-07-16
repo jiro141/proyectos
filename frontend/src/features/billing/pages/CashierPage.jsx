@@ -428,14 +428,23 @@ export default function CashierPage() {
     if (!order?.id) return
     try {
       await generateBill(order.id)
-      generateBillPdf(order)
-      setSelectedOrder(null)
-      fetchOrders({ status: 'delivered' })
-      fetchBills({ status: 'pending' })
-      toast.success('Cuenta generada correctamente')
     } catch (err) {
       toast.error(err.response?.data?.error || 'Error al generar la cuenta')
+      return
     }
+
+    // Generar PDF (separado para no ocultar errores de la API)
+    try {
+      generateBillPdf(order)
+    } catch (err) {
+      console.error('Error generando PDF:', err)
+      toast.error('La cuenta se generó pero hubo un error al generar el PDF')
+    }
+
+    setSelectedOrder(null)
+    fetchOrders({ status: 'delivered' })
+    fetchBills({ status: 'pending' })
+    toast.success('Cuenta generada correctamente')
   }
 
   const handlePay = async (bill, paymentMethod, amountPaid) => {

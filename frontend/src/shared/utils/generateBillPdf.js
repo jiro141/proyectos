@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf'
-import 'jspdf-autotable'
+import { autoTable } from 'jspdf-autotable'
 
 export default function generateBillPdf(order) {
   if (!order) return
@@ -8,9 +8,9 @@ export default function generateBillPdf(order) {
   const pageWidth = doc.internal.pageSize.getWidth()
 
   // ── Colores ──
-  const primary = [59, 130, 246] // blue-500
-  const gray = [107, 114, 128]   // gray-500
-  const dark = [31, 41, 55]      // gray-800
+  const primary = [59, 130, 246]
+  const gray = [107, 114, 128]
+  const dark = [31, 41, 55]
 
   // ── Encabezado ──
   doc.setFontSize(22)
@@ -73,7 +73,8 @@ export default function generateBillPdf(order) {
   const tax = subtotal * 0.1
   const grandTotal = subtotal + tax
 
-  doc.autoTable({
+  // Usamos autoTable como función directa en vez del plugin
+  autoTable(doc, {
     startY: infoY + 10,
     head: [['Cant.', 'Producto', 'Precio', 'Subtotal']],
     body: items,
@@ -112,7 +113,7 @@ export default function generateBillPdf(order) {
   })
 
   // ── Pie ──
-  const lastY = doc.lastAutoTable.finalY || infoY + 50
+  const lastY = doc.lastAutoTable?.finalY || infoY + 50
 
   doc.setDrawColor(...gray)
   doc.line(20, lastY + 15, pageWidth - 20, lastY + 15)
