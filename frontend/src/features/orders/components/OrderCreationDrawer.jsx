@@ -174,7 +174,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
             </Button>
           </div>
         ) : (
-        /* ── Pedido existente ── */}
+        {/* ── Pedido existente ── */}
         {existingOrder && existingOrder.items && existingOrder.items.length > 0 && (
           <div className="mb-4 rounded-xl border border-gray-600 bg-gray-800/50 overflow-hidden">
             <div className="flex items-center justify-between px-3 py-2 bg-gray-700/50 border-b border-gray-600">
