@@ -38,6 +38,22 @@ export const useOrderStore = create((set, get) => ({
     return data
   },
 
+  removeItem: async (orderId, itemId) => {
+    try {
+      await api.delete(`/orders/items/${itemId}/`)
+      set((s) => ({
+        orders: s.orders.map((o) =>
+          o.id === orderId
+            ? { ...o, items: o.items?.filter((i) => i.id !== itemId) }
+            : o
+        ),
+      }))
+      toast.success('Item eliminado del pedido')
+    } catch {
+      toast.error('Error al eliminar el item')
+    }
+  },
+
   updateItemStatus: async (itemId, status) => {
     try {
       const { data } = await api.patch(`/orders/items/${itemId}/update_status/`, { status })

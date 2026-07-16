@@ -6,7 +6,7 @@ import Drawer from '../../../shared/components/Drawer'
 import Button from '../../../shared/components/Button'
 import Modal from '../../../shared/components/Modal'
 import { formatCurrency } from '../../../shared/utils/formatters'
-import { FiPlus, FiMinus, FiShoppingCart, FiSend, FiClock, FiSearch, FiX, FiCheckCircle, FiRefreshCw } from 'react-icons/fi'
+import { FiPlus, FiMinus, FiShoppingCart, FiSend, FiClock, FiSearch, FiX, FiCheckCircle, FiRefreshCw, FiTrash2 } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 
 const ORDER_STATUS = {
@@ -193,13 +193,25 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
             </div>
             <div className="divide-y divide-gray-700/50">
               {existingOrder.items.map(item => (
-                <div key={item.id} className="flex items-center justify-between px-3 py-1.5">
+                <div key={item.id} className="flex items-center justify-between px-3 py-1.5 group">
                   <span className="text-sm text-gray-300">
                     <strong className="text-gray-200">{item.quantity}x</strong> {item.item_name}
                   </span>
-                  <span className="text-xs text-gray-500">
-                    {formatCurrency(parseFloat(item.unit_price) * item.quantity)}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">
+                      {formatCurrency(parseFloat(item.unit_price) * item.quantity)}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        useOrderStore.getState().removeItem(existingOrder.id, item.id)
+                      }}
+                      className="p-1 text-gray-600 hover:text-red-400 hover:bg-red-900/20 rounded transition-colors opacity-0 group-hover:opacity-100"
+                      title="Eliminar item"
+                    >
+                      <FiTrash2 size={14} />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
