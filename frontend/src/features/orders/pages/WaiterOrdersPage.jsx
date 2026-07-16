@@ -70,11 +70,11 @@ export default function WaiterOrdersPage() {
     if (!destination) return
     if (source.droppableId === destination.droppableId) return
 
-    const validTransitions = {
-      pending: 'preparing',
-      preparing: 'ready',
-      ready: 'delivered',
-    }
+    // Solo admin puede mover entre pendiente/preparando/listo
+    // Waiter solo puede mover de listo a entregado
+    const validTransitions = isAdmin
+      ? { pending: 'preparing', preparing: 'ready', ready: 'delivered' }
+      : { ready: 'delivered' }
 
     const expectedDest = validTransitions[source.droppableId]
     if (!expectedDest || destination.droppableId !== expectedDest) return
@@ -104,7 +104,7 @@ export default function WaiterOrdersPage() {
 
     return (
       <>
-        {hasPreparing && (
+        {isAdmin && hasPreparing && (
           <Button
             onClick={() => {
               selectedOrder.items
