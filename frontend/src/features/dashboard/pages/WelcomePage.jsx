@@ -31,7 +31,11 @@ export default function WelcomePage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={
+        userModules.length === 1
+          ? "flex justify-center"
+          : "grid grid-cols-1 sm:grid-cols-2 gap-4"
+      }>
         {userModules.map((mod) => (
           <button
             key={mod.path}
