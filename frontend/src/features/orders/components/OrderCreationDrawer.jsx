@@ -1,11 +1,12 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useMenuStore } from '../../menu/store/useMenuStore'
 import { useOrderStore } from '../store/useOrderStore'
+import { useTableStore } from '../../tables/store/useTableStore'
 import Drawer from '../../../shared/components/Drawer'
 import Button from '../../../shared/components/Button'
 import Modal from '../../../shared/components/Modal'
 import { formatCurrency } from '../../../shared/utils/formatters'
-import { FiPlus, FiMinus, FiShoppingCart, FiSend, FiClock, FiSearch, FiX } from 'react-icons/fi'
+import { FiPlus, FiMinus, FiShoppingCart, FiSend, FiClock, FiSearch, FiX, FiCheckCircle, FiRefreshCw } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 
 const ORDER_STATUS = {
@@ -133,6 +134,18 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
     }
   }
 
+  const handleMarkAsReady = async () => {
+    if (!table) return
+    try {
+      await useTableStore.getState().freeTable(table.id)
+      toast.success('Mesa lista para usar')
+      onSuccess?.()
+      onClose()
+    } catch {
+      toast.error('Error al liberar la mesa')
+    }
+  }
+
   return (
     <>
       <Drawer
@@ -141,7 +154,27 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
         title={`Mesa ${table?.number || table?.id}`}
         dark={dark}
       >
-        {/* ── Pedido existente ── */}
+        {/* ── Mesa en limpieza ── */}
+        {table?.status === 'cleaning' ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="w-20 h-20 rounded-full bg-sky-900/30 border-2 border-sky-500/30 flex items-center justify-center">
+              <FiRefreshCw size={40} className="text-sky-400" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-100 mt-5">Mesa en Limpieza</h3>
+            <p className="text-sm text-gray-400 mt-1.5 mb-8 text-center max-w-xs">
+              La mesa está siendo higienizada. Hacé clic en "Lista para usar" cuando esté lista.
+            </p>
+            <Button
+              variant="success"
+              onClick={handleMarkAsReady}
+              className="w-full flex items-center justify-center gap-2 py-3 text-base"
+            >
+              <FiCheckCircle size={20} />
+              Lista para usar
+            </Button>
+          </div>
+        ) : (
+        /* ── Pedido existente ── */}
         {existingOrder && existingOrder.items && existingOrder.items.length > 0 && (
           <div className="mb-4 rounded-xl border border-gray-600 bg-gray-800/50 overflow-hidden">
             <div className="flex items-center justify-between px-3 py-2 bg-gray-700/50 border-b border-gray-600">
@@ -374,6 +407,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
               {existingOrder ? 'Agregá más productos al pedido' : 'Seleccioná productos del menú'}
             </p>
           </div>
+        )}
         )}
       </Drawer>
 
