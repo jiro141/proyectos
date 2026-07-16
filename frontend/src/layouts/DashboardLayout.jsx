@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { useAuthStore } from '../features/auth/store/useAuthStore'
 import { useNavigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { FiGrid, FiCoffee, FiClipboard, FiDroplet, FiDollarSign, FiLogOut, FiMenu, FiX, FiLoader, FiBell, FiCheck } from 'react-icons/fi'
-import useNotificationSocket from '../shared/hooks/useNotificationSocket'
-import usePushNotifications from '../shared/hooks/usePushNotifications'
 import { useNotificationStore } from '../features/notifications/store/useNotificationStore'
 
 const navItems = [
@@ -21,10 +19,6 @@ export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const notifRef = useRef(null)
-
-  // Conectar WebSocket + Push notifications
-  useNotificationSocket()
-  usePushNotifications()
 
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {

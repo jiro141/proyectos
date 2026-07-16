@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useOrderStore } from '../store/useOrderStore'
-import useOrderSocket from '../../../shared/hooks/useOrderSocket'
 import OrderDetailPanel from '../../../shared/components/OrderDetailPanel'
 import Button from '../../../shared/components/Button'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
@@ -26,7 +25,6 @@ function TimeSince({ date }) {
 
 export default function KitchenPage() {
   const { orders, loading, fetchOrders, updateItemStatus, selectedOrderId, setSelectedOrderId } = useOrderStore()
-  useOrderSocket()
 
   useEffect(() => {
     fetchOrders()
