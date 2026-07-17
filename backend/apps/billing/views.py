@@ -100,3 +100,50 @@ class BillViewSet(viewsets.ModelViewSet):
             'recent_payments': BillSerializer(recent_payments, many=True).data,
         }
         return Response(data)
+
+    @action(detail=False, methods=['get'])
+    def report(self, request):
+        paid = Bill.objects.filter(status='paid').select_related(
+            'order__table', 'cashier'
+        ).order_by('-paid_at')
+
+        total_sales = paid.aggregate(total=Sum('total'))['total'] or 0
+        total_transactions = paid.count()
+        average_ticket = total_sales / total_transactions if total_transactions > 0 else 0
+
+        by_method = (
+            paid.values('payment_method')
+            .annotate(total=Sum('total'), count=Count('id'))
+            .order_by('payment_method')
+        )
+        by_payment_method = {}
+        for entry in by_method:
+            method_key = entry['payment_method'] or 'sin_metodo'
+            by_payment_method[method_key] = {
+                'total': entry['total'],
+                'count': entry['count'],
+            }
+
+        sales = []
+        for bill in paid:
+            sales.append({
+                'bill_id': bill.id,
+                'order_id': bill.order.id,
+                'table_number': bill.order.table.number,
+                'payment_method': bill.payment_method,
+                'payment_method_display': bill.get_payment_method_display(),
+                'total': bill.total,
+                'cashier_name': bill.cashier.get_full_name() or bill.cashier.username if bill.cashier else '—',
+                'paid_at': bill.paid_at,
+            })
+
+        data = {
+            'summary': {
+                'total_sales': total_sales,
+                'total_transactions': total_transactions,
+                'average_ticket': average_ticket,
+            },
+            'by_payment_method': by_payment_method,
+            'sales': sales,
+        }
+        return Response(data)

@@ -12,6 +12,8 @@ export const useBillStore = create((set) => ({
     recent_payments: [],
   },
   dashboardLoading: false,
+  report: null,
+  reportLoading: false,
 
   fetchBills: async (params = {}) => {
     set({ loading: true })
@@ -51,5 +53,19 @@ export const useBillStore = create((set) => ({
     }))
     toast.success('Pago registrado')
     return data
+  },
+
+  fetchReport: async () => {
+    set({ reportLoading: true })
+    try {
+      const { data } = await api.get('/bills/report/')
+      set({ report: data })
+      return data
+    } catch {
+      toast.error('Error al cargar el reporte de ventas')
+      return null
+    } finally {
+      set({ reportLoading: false })
+    }
   },
 }))

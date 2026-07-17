@@ -7,10 +7,11 @@ import Button from '../../../shared/components/Button'
 import StatusBadge from '../../../shared/components/StatusBadge'
 import { formatCurrency, formatDate } from '../../../shared/utils/formatters'
 import generateBillPdf from '../../../shared/utils/generateBillPdf'
+import generateReportPdf from '../../../shared/utils/generateReportPdf'
 import {
   FiDollarSign, FiCheckCircle, FiPrinter, FiRefreshCw,
   FiClipboard, FiClock, FiUser, FiChevronRight,
-  FiCreditCard, FiSend, FiX, FiTrendingUp,
+  FiCreditCard, FiSend, FiX, FiTrendingUp, FiFileText,
 } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 
@@ -398,7 +399,7 @@ function PaymentDrawer({ bill, onClose, onPay }) {
 /* ─── Página principal ─── */
 export default function CashierPage() {
   const { orders, fetchOrders } = useOrderStore()
-  const { bills, fetchBills, generateBill, payBill, dashboard, fetchDashboard, dashboardLoading } = useBillStore()
+  const { bills, fetchBills, generateBill, payBill, dashboard, fetchDashboard, dashboardLoading, fetchReport, reportLoading } = useBillStore()
   const { tables, fetchTables } = useTableStore()
 
   const [selectedOrder, setSelectedOrder] = useState(null)
@@ -465,6 +466,18 @@ export default function CashierPage() {
     }
   }
 
+  const handleGenerateReport = async () => {
+    const data = await fetchReport()
+    if (!data) return
+    try {
+      await generateReportPdf(data, window.location.origin)
+      toast.success('Reporte de ventas descargado')
+    } catch (err) {
+      console.error('Error generando PDF de reporte:', err)
+      toast.error('Error al generar el PDF del reporte')
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -473,17 +486,27 @@ export default function CashierPage() {
           <h1 className="text-2xl font-bold">Caja</h1>
           <p className="text-sm text-gray-400 mt-0.5">Facturá pedidos entregados y cobrá cuentas pendientes</p>
         </div>
-        <Button
-          variant="secondary"
-          onClick={() => {
-            fetchOrders({ status: 'delivered' })
-            fetchBills({ status: 'pending' })
-            fetchDashboard()
-          }}
-        >
-          <FiRefreshCw size={16} className="inline mr-1.5" />
-          Actualizar
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            onClick={handleGenerateReport}
+            disabled={reportLoading}
+          >
+            <FiFileText size={16} className="inline mr-1.5" />
+            {reportLoading ? 'Generando...' : 'Generar Reporte'}
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              fetchOrders({ status: 'delivered' })
+              fetchBills({ status: 'pending' })
+              fetchDashboard()
+            }}
+          >
+            <FiRefreshCw size={16} className="inline mr-1.5" />
+            Actualizar
+          </Button>
+        </div>
       </div>
 
       {/* Stats */}
