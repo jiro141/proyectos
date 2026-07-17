@@ -426,8 +426,10 @@ export default function CashierPage() {
 
   const handleGenerateBill = async (order) => {
     if (!order?.id) return
+    let billId
     try {
-      await generateBill(order.id)
+      const bill = await generateBill(order.id)
+      billId = bill?.id
     } catch (err) {
       toast.error(err.response?.data?.error || 'Error al generar la cuenta')
       return
@@ -435,7 +437,7 @@ export default function CashierPage() {
 
     // Generar PDF (separado para no ocultar errores de la API)
     try {
-      generateBillPdf(order)
+      await generateBillPdf(order, billId, window.location.origin)
     } catch (err) {
       console.error('Error generando PDF:', err)
       toast.error('La cuenta se generó pero hubo un error al generar el PDF')

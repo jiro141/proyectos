@@ -8,6 +8,7 @@ import TablesPage from '../features/tables/pages/TablesPage'
 import WaiterOrdersPage from '../features/orders/pages/WaiterOrdersPage'
 import KitchenPage from '../features/orders/pages/KitchenPage'
 import CashierPage from '../features/billing/pages/CashierPage'
+import BillViewPage from '../features/billing/pages/BillViewPage'
 import WelcomePage from '../features/dashboard/pages/WelcomePage'
 
 function ProtectedRoute({ children, allowedRoles }) {
@@ -24,6 +25,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
+      <Route path="/cuenta/:billId" element={<BillViewPage />} />
 
       <Route path="/" element={<DashboardLayout />}>
         <Route index element={<WelcomePage />} />
