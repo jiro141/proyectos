@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "257910510655",
+    "project_id": "elpationotificaciones",
+    "storage_bucket": "elpationotificaciones.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257910510655:android:9d1c32ce97d89609ec948a",
+        "android_client_info": {
+          "package_name": "com.pizzeria.elpatio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzzZequfANf_KejzjkwT_VhTomfUROljI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257910510655:android:4f16551f9fb69db9ec948a",
+        "android_client_info": {
+          "package_name": "elpatio.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzzZequfANf_KejzjkwT_VhTomfUROljI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

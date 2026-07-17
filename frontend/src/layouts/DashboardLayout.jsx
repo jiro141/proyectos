@@ -3,6 +3,7 @@ import { useAuthStore } from '../features/auth/store/useAuthStore'
 import { useNavigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { FiGrid, FiCoffee, FiClipboard, FiDroplet, FiDollarSign, FiLogOut, FiMenu, FiX, FiLoader, FiBell, FiCheck } from 'react-icons/fi'
 import { useNotificationStore } from '../features/notifications/store/useNotificationStore'
+import useFirebaseMessaging from '../shared/hooks/useFirebaseMessaging'
 
 const navItems = [
   { path: '/mesas', label: 'Mesas', roles: ['waiter', 'admin'], icon: FiGrid },
@@ -19,6 +20,7 @@ export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const notifRef = useRef(null)
+  useFirebaseMessaging()
 
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {
