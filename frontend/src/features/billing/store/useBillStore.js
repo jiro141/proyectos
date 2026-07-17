@@ -68,4 +68,10 @@ export const useBillStore = create((set) => ({
       set({ reportLoading: false })
     }
   },
+
+  clearBills: () => set({
+    bills: [],
+    report: null,
+    dashboard: { total_billed: 0, total_paid: 0, total_pending: 0, recent_payments: [] },
+  }),
 }))

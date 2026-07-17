@@ -11,7 +11,7 @@ import generateReportPdf from '../../../shared/utils/generateReportPdf'
 import {
   FiDollarSign, FiCheckCircle, FiPrinter, FiRefreshCw,
   FiClipboard, FiClock, FiUser, FiChevronRight,
-  FiCreditCard, FiSend, FiX, FiTrendingUp, FiFileText,
+  FiCreditCard, FiSend, FiX, FiTrendingUp, FiFileText, FiPower,
 } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 
@@ -398,12 +398,13 @@ function PaymentDrawer({ bill, onClose, onPay }) {
 
 /* ─── Página principal ─── */
 export default function CashierPage() {
-  const { orders, fetchOrders } = useOrderStore()
-  const { bills, fetchBills, generateBill, payBill, dashboard, fetchDashboard, dashboardLoading, fetchReport, reportLoading } = useBillStore()
+  const { orders, fetchOrders, clearOrders } = useOrderStore()
+  const { bills, fetchBills, generateBill, payBill, dashboard, fetchDashboard, dashboardLoading, fetchReport, reportLoading, clearBills } = useBillStore()
   const { tables, fetchTables } = useTableStore()
 
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [selectedBill, setSelectedBill] = useState(null)
+  const [showDayClose, setShowDayClose] = useState(false)
 
   useEffect(() => {
     fetchOrders({ status: 'delivered' })
@@ -472,10 +473,18 @@ export default function CashierPage() {
     try {
       await generateReportPdf(data, window.location.origin)
       toast.success('Reporte de ventas descargado')
+      setShowDayClose(true)
     } catch (err) {
       console.error('Error generando PDF de reporte:', err)
       toast.error('Error al generar el PDF del reporte')
     }
+  }
+
+  const handleDayClose = () => {
+    clearOrders()
+    clearBills()
+    setShowDayClose(false)
+    toast.success('Cierre del día realizado. Todos los pedidos han sido limpiados.')
   }
 
   return (
@@ -643,6 +652,42 @@ export default function CashierPage() {
         onClose={() => setSelectedBill(null)}
         onPay={handlePay}
       />
+
+      {/* ─── Modal de Cierre del Día ─── */}
+      {showDayClose && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setShowDayClose(false)} />
+          <div className="relative rounded-xl shadow-xl w-full max-w-sm mx-4 p-6" style={{ backgroundColor: '#111827' }}>
+            <div className="flex flex-col items-center text-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-amber-900/30 flex items-center justify-center">
+                <FiPower size={28} className="text-amber-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">Cierre del Día</h3>
+                <p className="text-sm text-gray-300 mt-1">
+                  ¿Desea limpiar todos los pedidos del día? Los pedidos entregados, cuentas pendientes y estadísticas se eliminarán de la vista.
+                </p>
+              </div>
+              <div className="flex gap-2 w-full">
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowDayClose(false)}
+                  className="flex-1"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={handleDayClose}
+                  className="flex-1 flex items-center justify-center gap-2"
+                >
+                  <FiCheckCircle size={16} />
+                  Cierre del Día
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

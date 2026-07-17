@@ -85,4 +85,6 @@ export const useOrderStore = create((set, get) => ({
     toast.success(`Pedido #${orderId} marcado como ${status}`)
     return data
   },
+
+  clearOrders: () => set({ orders: [], selectedOrderId: null }),
 }))
