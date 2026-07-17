@@ -398,7 +398,7 @@ function PaymentDrawer({ bill, onClose, onPay }) {
 
 /* ─── Página principal ─── */
 export default function CashierPage() {
-  const { orders, fetchOrders, clearOrders } = useOrderStore()
+  const { orders, fetchOrders, clearDeliveredOrders } = useOrderStore()
   const { bills, fetchBills, generateBill, payBill, dashboard, fetchDashboard, dashboardLoading, fetchReport, reportLoading, clearBills } = useBillStore()
   const { tables, fetchTables } = useTableStore()
 
@@ -481,10 +481,10 @@ export default function CashierPage() {
   }
 
   const handleDayClose = () => {
-    clearOrders()
+    clearDeliveredOrders()
     clearBills()
     setShowDayClose(false)
-    toast.success('Cierre del día realizado. Todos los pedidos han sido limpiados.')
+    toast.success('Cierre del día realizado. Pedidos entregados y cuentas limpiados.')
   }
 
   return (

@@ -86,5 +86,8 @@ export const useOrderStore = create((set, get) => ({
     return data
   },
 
-  clearOrders: () => set({ orders: [], selectedOrderId: null }),
+  clearDeliveredOrders: () => set((s) => ({
+    orders: s.orders.filter((o) => o.status !== 'delivered' && o.status !== 'billed'),
+    selectedOrderId: null,
+  })),
 }))
