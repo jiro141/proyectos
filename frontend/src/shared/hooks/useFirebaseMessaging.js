@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { getToken, onMessage } from 'firebase/messaging'
 import toast from 'react-hot-toast'
-import { messaging } from '../../firebase-config'
+import { getFirebaseMessaging } from '../../firebase-config'
 import { useNotificationStore } from '../../features/notifications/store/useNotificationStore'
 import api from '../../services/api'
 
@@ -9,6 +9,8 @@ export default function useFirebaseMessaging() {
   const [token, setToken] = useState(null)
   const [permission, setPermission] = useState(Notification.permission)
   const [error, setError] = useState(null)
+  const [messaging, setMessaging] = useState(null)
+  const [resolved, setResolved] = useState(false)
   const isSupported =
     typeof window !== 'undefined' &&
     'Notification' in window &&
@@ -19,7 +21,14 @@ export default function useFirebaseMessaging() {
   const registered = useRef(false)
 
   useEffect(() => {
-    if (!isSupported || registered.current) return
+    getFirebaseMessaging().then(m => {
+      setMessaging(m)
+      setResolved(true)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!resolved || !messaging || !isSupported || registered.current) return
 
     let cancelled = false
 
@@ -91,7 +100,7 @@ export default function useFirebaseMessaging() {
       cancelled = true
       unsubRef.current?.()
     }
-  }, [isSupported, addNotification])
+  }, [isSupported, messaging, resolved, addNotification])
 
   return { token, permission, error, isSupported }
 }
