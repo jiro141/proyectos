@@ -80,6 +80,11 @@ class BillViewSet(viewsets.ModelViewSet):
 
         return Response(BillSerializer(bill).data)
 
+    @action(detail=True, methods=['get'], permission_classes=[permissions.AllowAny])
+    def public(self, request, pk=None):
+        bill = self.get_object()
+        return Response(BillSerializer(bill).data)
+
     @action(detail=False, methods=['get'])
     def dashboard(self, request):
         total_billed = Bill.objects.aggregate(total=Sum('total'))['total'] or 0

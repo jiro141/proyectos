@@ -14,7 +14,7 @@ export default function BillViewPage() {
   useEffect(() => {
     if (!billId) return
     setLoading(true)
-    api.get(`/bills/${billId}/`)
+    api.get(`/bills/${billId}/public/`)
       .then(({ data }) => {
         setBill(data)
         setError(null)
@@ -88,8 +88,8 @@ export default function BillViewPage() {
       <div className="max-w-lg mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-primary-500">Pizzería El Patio</h1>
-          <p className="text-sm text-gray-500 mt-1">Comprobante no fiscal</p>
+          <img src="/logo.png" alt="Pizzería El Patio" className="h-16 mx-auto mb-2" />
+          <p className="text-sm text-gray-500">Comprobante no fiscal</p>
         </div>
 
         {/* Info */}
