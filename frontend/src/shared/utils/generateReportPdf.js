@@ -48,7 +48,7 @@ const METHOD_ICONS = {
   transfer: '🏦',
 }
 
-export default async function generateReportPdf(reportData, origin) {
+export default async function generateReportPdf(reportData, origin, { from, to } = {}) {
   if (!reportData) return
 
   const doc = new jsPDF({ unit: 'mm', format: 'a4' })
@@ -76,7 +76,16 @@ export default async function generateReportPdf(reportData, origin) {
 
   doc.setFontSize(10)
   doc.setTextColor(...COLORS.gray)
-  doc.text('Reporte de Ventas', margin, 33)
+
+  let subtitle = 'Reporte de Ventas'
+  if (from && to) {
+    subtitle = `Reporte de Ventas — del ${from} al ${to}`
+  } else if (from) {
+    subtitle = `Reporte de Ventas — desde ${from}`
+  } else if (to) {
+    subtitle = `Reporte de Ventas — hasta ${to}`
+  }
+  doc.text(subtitle, margin, 33)
 
   // Fecha de generación
   const now = new Date()

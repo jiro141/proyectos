@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { useOrderStore } from '../../orders/store/useOrderStore'
 import { useBillStore } from '../store/useBillStore'
 import { useTableStore } from '../../tables/store/useTableStore'
+import { useAuthStore } from '../../auth/store/useAuthStore'
 import Drawer from '../../../shared/components/Drawer'
 import Button from '../../../shared/components/Button'
 import StatusBadge from '../../../shared/components/StatusBadge'
@@ -12,6 +13,7 @@ import {
   FiDollarSign, FiCheckCircle, FiPrinter, FiRefreshCw,
   FiClipboard, FiClock, FiUser, FiChevronRight,
   FiCreditCard, FiSend, FiX, FiTrendingUp, FiFileText, FiPower,
+  FiCalendar, FiSearch,
 } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 
@@ -401,10 +403,15 @@ export default function CashierPage() {
   const { orders, fetchOrders, clearDeliveredOrders } = useOrderStore()
   const { bills, fetchBills, generateBill, payBill, dashboard, fetchDashboard, dashboardLoading, fetchReport, reportLoading, closeDay, clearBills } = useBillStore()
   const { tables, fetchTables } = useTableStore()
+  const user = useAuthStore((s) => s.user)
+  const isAdmin = user?.role === 'admin' || user?.is_superuser
 
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [selectedBill, setSelectedBill] = useState(null)
   const [showDayClose, setShowDayClose] = useState(false)
+  const [showDateFilter, setShowDateFilter] = useState(false)
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
 
   useEffect(() => {
     fetchOrders({ status: 'delivered' })
@@ -480,6 +487,28 @@ export default function CashierPage() {
     }
   }
 
+  const handleDateFilterReport = async () => {
+    if (!dateFrom || !dateTo) {
+      toast.error('Seleccioná una fecha de inicio y fin')
+      return
+    }
+    if (dateFrom > dateTo) {
+      toast.error('La fecha de inicio no puede ser mayor a la de fin')
+      return
+    }
+
+    const data = await fetchReport({ from: dateFrom, to: dateTo })
+    if (!data) return
+    try {
+      await generateReportPdf(data, window.location.origin, { from: dateFrom, to: dateTo })
+      toast.success('Reporte por fechas descargado')
+      setShowDateFilter(false)
+    } catch (err) {
+      console.error('Error generando PDF de reporte por fechas:', err)
+      toast.error('Error al generar el PDF del reporte')
+    }
+  }
+
   const handleDayClose = async () => {
     const result = await closeDay()
     if (!result) return
@@ -506,6 +535,15 @@ export default function CashierPage() {
             <FiFileText size={16} className="inline mr-1.5" />
             {reportLoading ? 'Generando...' : 'Generar Reporte'}
           </Button>
+          {isAdmin && (
+            <Button
+              variant="secondary"
+              onClick={() => setShowDateFilter(true)}
+            >
+              <FiCalendar size={16} className="inline mr-1.5" />
+              Reporte por Fechas
+            </Button>
+          )}
           <Button
             variant="secondary"
             onClick={() => {
@@ -654,6 +692,71 @@ export default function CashierPage() {
         onClose={() => setSelectedBill(null)}
         onPay={handlePay}
       />
+
+      {/* ─── Modal de Reporte por Fechas ─── */}
+      {showDateFilter && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setShowDateFilter(false)} />
+          <div className="relative rounded-xl shadow-xl w-full max-w-sm mx-4 p-6" style={{ backgroundColor: '#111827' }}>
+            <div className="flex flex-col items-center text-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-blue-900/30 flex items-center justify-center">
+                <FiCalendar size={28} className="text-blue-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">Reporte por Fechas</h3>
+                <p className="text-sm text-gray-300 mt-1">
+                  Seleccioná el rango de fechas para generar el reporte de ventas.
+                </p>
+              </div>
+              <div className="w-full space-y-3">
+                <div className="text-left">
+                  <label className="block text-sm font-semibold text-gray-200 mb-1">Desde</label>
+                  <input
+                    type="date"
+                    value={dateFrom}
+                    onChange={(e) => setDateFrom(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl
+                      focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+                      text-white transition-shadow"
+                  />
+                </div>
+                <div className="text-left">
+                  <label className="block text-sm font-semibold text-gray-200 mb-1">Hasta</label>
+                  <input
+                    type="date"
+                    value={dateTo}
+                    onChange={(e) => setDateTo(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl
+                      focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+                      text-white transition-shadow"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-2 w-full">
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setShowDateFilter(false)
+                    setDateFrom('')
+                    setDateTo('')
+                  }}
+                  className="flex-1"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={handleDateFilterReport}
+                  disabled={reportLoading}
+                  className="flex-1 flex items-center justify-center gap-2"
+                >
+                  <FiSearch size={16} />
+                  {reportLoading ? 'Generando...' : 'Generar Reporte'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ─── Modal de Cierre del Día ─── */}
       {showDayClose && (

@@ -113,6 +113,23 @@ class BillViewSet(viewsets.ModelViewSet):
     def report(self, request):
         include_closed = request.query_params.get('include_closed') == 'true'
         base = Bill.objects.all() if include_closed else self._active_bills()
+
+        # Filtro por fechas (solo admin)
+        from_date = request.query_params.get('from')
+        to_date = request.query_params.get('to')
+        has_date_filter = from_date is not None or to_date is not None
+        if has_date_filter:
+            is_admin = request.user.is_superuser or request.user.role == 'admin'
+            if not is_admin:
+                return Response(
+                    {'error': 'Solo el administrador puede filtrar reportes por fecha'},
+                    status=403,
+                )
+            if from_date:
+                base = base.filter(paid_at__date__gte=from_date)
+            if to_date:
+                base = base.filter(paid_at__date__lte=to_date)
+
         paid = base.filter(status='paid').select_related(
             'order__table', 'cashier'
         ).order_by('-paid_at')

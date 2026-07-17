@@ -55,14 +55,15 @@ export const useBillStore = create((set) => ({
     return data
   },
 
-  fetchReport: async () => {
+  fetchReport: async (params = {}) => {
     set({ reportLoading: true })
     try {
-      const { data } = await api.get('/bills/report/')
+      const { data } = await api.get('/bills/report/', { params })
       set({ report: data })
       return data
-    } catch {
-      toast.error('Error al cargar el reporte de ventas')
+    } catch (err) {
+      const msg = err.response?.data?.error || 'Error al cargar el reporte de ventas'
+      toast.error(msg)
       return null
     } finally {
       set({ reportLoading: false })
