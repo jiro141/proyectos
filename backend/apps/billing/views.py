@@ -17,6 +17,9 @@ class BillViewSet(viewsets.ModelViewSet):
         status_filter = self.request.query_params.get('status')
         if status_filter:
             qs = qs.filter(status=status_filter)
+        include_closed = self.request.query_params.get('include_closed') == 'true'
+        if not include_closed:
+            qs = qs.filter(closed=False)
         return qs
 
     @action(detail=False, methods=['post'])
@@ -85,12 +88,17 @@ class BillViewSet(viewsets.ModelViewSet):
         bill = self.get_object()
         return Response(BillSerializer(bill).data)
 
+    def _active_bills(self):
+        """Bills no cerrados (para dashboard y operaciones diarias)."""
+        return Bill.objects.filter(closed=False)
+
     @action(detail=False, methods=['get'])
     def dashboard(self, request):
-        total_billed = Bill.objects.aggregate(total=Sum('total'))['total'] or 0
-        paid = Bill.objects.filter(status='paid')
+        active = self._active_bills()
+        total_billed = active.aggregate(total=Sum('total'))['total'] or 0
+        paid = active.filter(status='paid')
         total_paid = paid.aggregate(total=Sum('total'))['total'] or 0
-        total_pending = Bill.objects.filter(status='pending').aggregate(total=Sum('total'))['total'] or 0
+        total_pending = active.filter(status='pending').aggregate(total=Sum('total'))['total'] or 0
         recent_payments = paid.order_by('-paid_at')[:10]
 
         data = {
@@ -103,7 +111,9 @@ class BillViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def report(self, request):
-        paid = Bill.objects.filter(status='paid').select_related(
+        include_closed = request.query_params.get('include_closed') == 'true'
+        base = Bill.objects.all() if include_closed else self._active_bills()
+        paid = base.filter(status='paid').select_related(
             'order__table', 'cashier'
         ).order_by('-paid_at')
 
@@ -147,3 +157,14 @@ class BillViewSet(viewsets.ModelViewSet):
             'sales': sales,
         }
         return Response(data)
+
+    @action(detail=False, methods=['post'])
+    def close_day(self, request):
+        """Cierra el día: marca todas las cuentas pagadas como cerradas."""
+        closed_count = Bill.objects.filter(status='paid', closed=False).update(
+            closed=True,
+        )
+        return Response({
+            'closed_count': closed_count,
+            'message': f'Cierre del día completado. {closed_count} cuentas cerradas.',
+        })

@@ -69,6 +69,17 @@ export const useBillStore = create((set) => ({
     }
   },
 
+  closeDay: async () => {
+    try {
+      const { data } = await api.post('/bills/close_day/')
+      toast.success(data.message || 'Cierre del día completado')
+      return data
+    } catch {
+      toast.error('Error al cerrar el día')
+      return null
+    }
+  },
+
   clearBills: () => set({
     bills: [],
     report: null,

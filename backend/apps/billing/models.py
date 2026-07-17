@@ -43,6 +43,7 @@ class Bill(models.Model):
         verbose_name='Cajero'
     )
     paid_at = models.DateTimeField(null=True, blank=True, verbose_name='Pagado en')
+    closed = models.BooleanField(default=False, verbose_name='Cerrado')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

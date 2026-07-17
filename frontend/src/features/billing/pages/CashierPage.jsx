@@ -399,7 +399,7 @@ function PaymentDrawer({ bill, onClose, onPay }) {
 /* ─── Página principal ─── */
 export default function CashierPage() {
   const { orders, fetchOrders, clearDeliveredOrders } = useOrderStore()
-  const { bills, fetchBills, generateBill, payBill, dashboard, fetchDashboard, dashboardLoading, fetchReport, reportLoading, clearBills } = useBillStore()
+  const { bills, fetchBills, generateBill, payBill, dashboard, fetchDashboard, dashboardLoading, fetchReport, reportLoading, closeDay, clearBills } = useBillStore()
   const { tables, fetchTables } = useTableStore()
 
   const [selectedOrder, setSelectedOrder] = useState(null)
@@ -480,11 +480,13 @@ export default function CashierPage() {
     }
   }
 
-  const handleDayClose = () => {
+  const handleDayClose = async () => {
+    const result = await closeDay()
+    if (!result) return
     clearDeliveredOrders()
     clearBills()
     setShowDayClose(false)
-    toast.success('Cierre del día realizado. Pedidos entregados y cuentas limpiados.')
+    toast.success(`Cierre del día: ${result.closed_count} cuentas cerradas.`)
   }
 
   return (

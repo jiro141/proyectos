@@ -20,6 +20,11 @@ class OrderViewSet(viewsets.ModelViewSet):
         table_filter = self.request.query_params.get('table')
         if table_filter:
             qs = qs.filter(table_id=table_filter)
+        # Ocultar pedidos facturados/entregados cuyo bill está cerrado (cierre del día)
+        qs = qs.exclude(
+            bill__closed=True,
+            status__in=['delivered', 'billed'],
+        )
         return qs
 
     def perform_create(self, serializer):
