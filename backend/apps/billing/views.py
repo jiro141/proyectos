@@ -125,6 +125,8 @@ class BillViewSet(viewsets.ModelViewSet):
                     {'error': 'Solo el administrador puede filtrar reportes por fecha'},
                     status=403,
                 )
+            # Reportes históricos: incluir bills cerrados también
+            base = Bill.objects.all()
             if from_date:
                 base = base.filter(paid_at__date__gte=from_date)
             if to_date:
