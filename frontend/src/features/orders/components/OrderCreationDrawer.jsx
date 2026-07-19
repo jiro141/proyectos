@@ -2,12 +2,13 @@ import { useEffect, useState, useMemo } from 'react'
 import { useMenuStore } from '../../menu/store/useMenuStore'
 import { useOrderStore } from '../store/useOrderStore'
 import { useTableStore } from '../../tables/store/useTableStore'
+import api from '../../../services/api'
 import Drawer from '../../../shared/components/Drawer'
 import Button from '../../../shared/components/Button'
 import Modal from '../../../shared/components/Modal'
 import ConfirmDialog from '../../../shared/components/ConfirmDialog'
 import { formatCurrency } from '../../../shared/utils/formatters'
-import { FiPlus, FiMinus, FiShoppingCart, FiSend, FiClock, FiSearch, FiX, FiCheckCircle, FiRefreshCw, FiTrash2 } from 'react-icons/fi'
+import { FiPlus, FiMinus, FiShoppingCart, FiSend, FiClock, FiSearch, FiX, FiCheckCircle, FiRefreshCw, FiTrash2, FiEdit3, FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 
 const ORDER_STATUS = {
@@ -35,6 +36,8 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
   const [submitting, setSubmitting] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [confirmDeleteItem, setConfirmDeleteItem] = useState(null)
+  const [orderNotes, setOrderNotes] = useState('')
+  const [showNotes, setShowNotes] = useState(false)
 
   const existingTotal = useMemo(() => {
     if (!order?.items) return 0
@@ -49,6 +52,14 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
     if (isOpen && table) {
       if (categories.length === 0) fetchMenu()
       setCart([])
+      // Sincronizar notas: si es pedido existente, cargar las que tenga y mostrar
+      if (existingOrder) {
+        setOrderNotes(existingOrder.notes || '')
+        setShowNotes(!!existingOrder.notes) // abrir automáticamente si hay notas
+      } else {
+        setOrderNotes('')
+        setShowNotes(false)
+      }
     }
   }, [isOpen, table?.id])
 
@@ -121,10 +132,15 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
             notes: item.notes || '',
           })
         }
+        // Si hay notas generales, actualizar las del pedido existente
+        if (orderNotes.trim()) {
+          await api.patch(`/orders/${existingOrder.id}/`, { notes: orderNotes })
+        }
         toast.success('Items agregados al pedido')
       } else {
         await createOrder({
           table: table.id,
+          notes: orderNotes.trim() || '',
           items: cart.map(item => ({
             menu_item: item.menu_item.id,
             quantity: item.quantity,
@@ -355,6 +371,46 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
         )}
 
         {cart.length > 0 && (
+          <>
+          {/* ── Notas generales del pedido ── */}
+          <div className="mb-3">
+            <button
+              onClick={() => setShowNotes(!showNotes)}
+              className={`flex items-center gap-2 text-sm w-full transition-colors ${
+                orderNotes ? 'text-primary-400' : 'text-gray-400 hover:text-gray-200'
+              }`}
+            >
+              <FiEdit3 size={14} />
+              <span className="font-medium">Notas del pedido</span>
+              {orderNotes && (
+                <span className="text-xs bg-primary-900/40 text-primary-400 px-1.5 py-0.5 rounded-full">
+                  1
+                </span>
+              )}
+              <span className="ml-auto">
+                {showNotes ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
+              </span>
+            </button>
+            {showNotes && (
+              <textarea
+                value={orderNotes}
+                onChange={(e) => setOrderNotes(e.target.value)}
+                placeholder="Ej: Preparar todo junto, mesa 5 con urgencia..."
+                className={`w-full border rounded-lg p-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-500 mt-2 ${
+                  dark
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+                }`}
+                rows={3}
+              />
+            )}
+            {orderNotes && !showNotes && (
+              <p className={`text-xs mt-1 italic truncate ${dark ? 'text-gray-500' : 'text-gray-400'}`}>
+                "{orderNotes}"
+              </p>
+            )}
+          </div>
+
           <div className={`border-t pt-3 ${dark ? 'border-gray-700' : ''}`}>
             <div className="flex items-center gap-2 mb-3">
               <FiShoppingCart size={16} className="text-primary-600" />
@@ -375,9 +431,15 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
                           setNotesModal(item.menu_item.id)
                           setNotesText(item.notes || '')
                         }}
-                        className="text-xs text-primary-600 hover:text-primary-800 shrink-0"
+                        className={`text-xs font-medium flex items-center gap-1 px-1.5 py-0.5 rounded shrink-0 transition-colors ${
+                          item.notes
+                            ? 'bg-primary-900/40 text-primary-400 hover:bg-primary-900/60'
+                            : 'text-gray-400 hover:text-primary-400 hover:bg-gray-700/50'
+                        }`}
+                        title="Agregar nota a este producto"
                       >
-                        Nota
+                        <FiEdit3 size={11} />
+                        {item.notes ? 'Nota' : 'Nota'}
                       </button>
                     </div>
                     <span className={`text-sm font-semibold shrink-0 ${dark ? 'text-gray-200' : ''}`}>
@@ -426,6 +488,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
                   : 'Crear Pedido'}
             </Button>
           </div>
+          </>
         )}
 
         {cart.length === 0 && (
