@@ -46,11 +46,11 @@ body {
   animation: slide-out-right 0.2s ease-in, fade-out 0.15s ease-in;
 }
 
-/* Ocultar scrollbar pero mantener scroll */
-.scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Ocultar TODAS las scrollbars pero mantener scroll */
+* {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
+*::-webkit-scrollbar {
+  display: none !important;
 }
