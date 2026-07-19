@@ -5,7 +5,6 @@ import { useTableStore } from '../../tables/store/useTableStore'
 import api from '../../../services/api'
 import Drawer from '../../../shared/components/Drawer'
 import Button from '../../../shared/components/Button'
-import Modal from '../../../shared/components/Modal'
 import ConfirmDialog from '../../../shared/components/ConfirmDialog'
 import { formatCurrency } from '../../../shared/utils/formatters'
 import { FiPlus, FiMinus, FiShoppingCart, FiSend, FiClock, FiSearch, FiX, FiCheckCircle, FiRefreshCw, FiTrash2, FiEdit3, FiChevronDown, FiChevronUp } from 'react-icons/fi'
@@ -31,8 +30,6 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
 
   const [cart, setCart] = useState([])
   const [activeCategory, setActiveCategory] = useState(null)
-  const [notesModal, setNotesModal] = useState(null)
-  const [notesText, setNotesText] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [confirmDeleteItem, setConfirmDeleteItem] = useState(null)
@@ -424,32 +421,14 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
               {cart.map((item) => (
                 <div key={item.menu_item.id} className={`rounded-lg p-2 ${dark ? 'bg-gray-700' : 'bg-gray-50'}`}>
                   <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-1 min-w-0 mr-1">
-                      <span className={`font-medium text-sm truncate ${dark ? 'text-gray-200' : ''}`}>{item.menu_item.name}</span>
-                      <button
-                        onClick={() => {
-                          setNotesModal(item.menu_item.id)
-                          setNotesText(item.notes || '')
-                        }}
-                        className={`text-xs font-medium flex items-center gap-1 px-1.5 py-0.5 rounded shrink-0 transition-colors ${
-                          item.notes
-                            ? 'bg-primary-900/40 text-primary-400 hover:bg-primary-900/60'
-                            : 'text-gray-400 hover:text-primary-400 hover:bg-gray-700/50'
-                        }`}
-                        title="Agregar nota a este producto"
-                      >
-                        <FiEdit3 size={11} />
-                        {item.notes ? 'Nota' : 'Nota'}
-                      </button>
-                    </div>
-                    <span className={`text-sm font-semibold shrink-0 ${dark ? 'text-gray-200' : ''}`}>
+                    <span className={`font-medium text-sm truncate ${dark ? 'text-gray-200' : ''}`}>
+                      {item.menu_item.name}
+                    </span>
+                    <span className={`text-sm font-semibold shrink-0 ml-2 ${dark ? 'text-gray-200' : ''}`}>
                       {formatCurrency(item.menu_item.price * item.quantity)}
                     </span>
                   </div>
-                  {item.notes && (
-                    <p className={`text-xs italic mb-1 ${dark ? 'text-gray-400' : 'text-gray-400'}`}>"{item.notes}"</p>
-                  )}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mb-1.5">
                     <button
                       onClick={() => updateQuantity(item.menu_item.id, -1)}
                       className={`p-1 rounded ${dark ? 'bg-gray-600 hover:bg-gray-500 text-gray-200' : 'bg-gray-200 hover:bg-gray-300'}`}
@@ -464,6 +443,26 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
                       <FiPlus size={12} />
                     </button>
                   </div>
+                  <textarea
+                    value={item.notes}
+                    onChange={(e) => {
+                      const val = e.target.value
+                      setCart(prev =>
+                        prev.map(i =>
+                          i.menu_item.id === item.menu_item.id
+                            ? { ...i, notes: val }
+                            : i
+                        )
+                      )
+                    }}
+                    placeholder="Notas..."
+                    rows={1}
+                    className={`w-full text-xs rounded px-2 py-1 resize-none focus:outline-none focus:ring-1 focus:ring-primary-500 ${
+                      dark
+                        ? 'bg-gray-600 border-gray-500 text-gray-300 placeholder-gray-500'
+                        : 'bg-gray-100 border-gray-300 text-gray-600 placeholder-gray-400'
+                    } ${item.notes ? 'border-primary-500/50' : 'border-transparent'} border`}
+                  />
                 </div>
               ))}
             </div>
@@ -517,35 +516,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
         cancelText="Cancelar"
       />
 
-      <Modal
-        isOpen={!!notesModal}
-        onClose={() => setNotesModal(null)}
-        title="Nota para el producto"
-      >
-        <textarea
-          value={notesText}
-          onChange={(e) => setNotesText(e.target.value)}
-          className={`w-full border rounded-lg p-2 h-24 resize-none ${dark ? 'bg-gray-700 text-white border-gray-600 placeholder-gray-400' : ''}`}
-          placeholder="Ej: sin cebolla, bien cocido..."
-        />
-        <div className="flex justify-end gap-2 mt-3">
-          <Button variant="secondary" onClick={() => setNotesModal(null)}>
-            Cancelar
-          </Button>
-          <Button
-            onClick={() => {
-              setCart(prev =>
-                prev.map(i =>
-                  i.menu_item.id === notesModal ? { ...i, notes: notesText } : i
-                )
-              )
-              setNotesModal(null)
-            }}
-          >
-            Guardar
-          </Button>
-        </div>
-      </Modal>
     </>
+
   )
 }
