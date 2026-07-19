@@ -133,7 +133,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
         if (orderNotes.trim()) {
           await api.patch(`/orders/${existingOrder.id}/`, { notes: orderNotes })
         }
-        toast.success('Items agregados al pedido')
+        toast.success('Productos agregados al pedido')
       } else {
         await createOrder({
           table: table.id,
@@ -413,7 +413,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
               <FiShoppingCart size={16} className="text-primary-600" />
               <h3 className={`text-sm font-semibold ${dark ? 'text-gray-200' : ''}`}>Pedido</h3>
               <span className={`ml-auto text-xs ${dark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {cart.reduce((s, i) => s + i.quantity, 0)} items
+                {cart.reduce((s, i) => s + i.quantity, 0)} productos
               </span>
             </div>
 

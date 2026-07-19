@@ -75,7 +75,7 @@ export default function OrderDetailPanel({ actions }) {
         {/* Items */}
         <div>
           <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Items ({order.items?.length || 0})
+            Productos ({order.items?.length || 0})
           </h4>
           <div className="space-y-2">
             {order.items?.map((item) => (

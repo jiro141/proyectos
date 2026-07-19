@@ -25,14 +25,14 @@ export const useMenuStore = create((set) => ({
   createCategory: async (data) => {
     const res = await api.post('/menu/categories/', data)
     set((s) => ({ categories: [...s.categories, res.data] }))
-    toast.success('Categoria creada')
+    toast.success('Categoría creada')
     return res.data
   },
 
   deleteCategory: async (id) => {
     await api.delete(`/menu/categories/${id}/`)
     set((s) => ({ categories: s.categories.filter((c) => c.id !== id) }))
-    toast.success('Categoria eliminada')
+    toast.success('Categoría eliminada')
   },
 
   createItem: async (data) => {

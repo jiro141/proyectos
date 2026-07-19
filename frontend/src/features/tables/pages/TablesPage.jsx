@@ -24,12 +24,6 @@ const STATUS = {
     dot: 'bg-rose-500',
     badge: 'bg-rose-900/30 text-rose-400 border-rose-700',
   },
-  reserved: {
-    label: 'Reservada',
-    bar: 'bg-amber-400',
-    dot: 'bg-amber-400',
-    badge: 'bg-amber-900/30 text-amber-400 border-amber-700',
-  },
   cleaning: {
     label: 'Limpieza',
     bar: 'bg-sky-400',
@@ -41,7 +35,7 @@ const STATUS = {
 /* ─── Resumen de conteo ─── */
 function SummaryBar({ tables }) {
   const counts = useMemo(() => {
-    const c = { free: 0, occupied: 0, reserved: 0, cleaning: 0 }
+    const c = { free: 0, occupied: 0, cleaning: 0 }
     tables.forEach((t) => { if (c[t.status] !== undefined) c[t.status]++ })
     return c
   }, [tables])
@@ -49,7 +43,6 @@ function SummaryBar({ tables }) {
   const items = [
     { key: 'free', label: 'Libres', color: 'bg-emerald-500' },
     { key: 'occupied', label: 'Ocupadas', color: 'bg-rose-500' },
-    { key: 'reserved', label: 'Reservadas', color: 'bg-amber-400' },
     { key: 'cleaning', label: 'Limpieza', color: 'bg-sky-400' },
   ]
 

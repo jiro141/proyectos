@@ -48,9 +48,9 @@ export const useOrderStore = create((set, get) => ({
             : o
         ),
       }))
-      toast.success('Item eliminado del pedido')
+      toast.success('Producto eliminado del pedido')
     } catch {
-      toast.error('Error al eliminar el item')
+      toast.error('Error al eliminar el producto')
     }
   },
 
@@ -70,10 +70,10 @@ export const useOrderStore = create((set, get) => ({
           }
         }),
       }))
-      toast.success(`Item marcado como ${status}`)
+      toast.success(`Producto marcado como ${status}`)
       return data
     } catch {
-      toast.error(`Error al marcar item como ${status}`)
+      toast.error(`Error al marcar producto como ${status}`)
     }
   },
 
