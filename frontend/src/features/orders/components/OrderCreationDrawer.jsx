@@ -417,7 +417,7 @@ export default function OrderCreationDrawer({ isOpen, onClose, table, existingOr
               </span>
             </div>
 
-            <div className="space-y-2 mb-3 max-h-48 overflow-y-auto">
+            <div className="space-y-2 mb-3 max-h-48 overflow-y-auto scrollbar-none">
               {cart.map((item) => (
                 <div key={item.menu_item.id} className={`rounded-lg p-2 ${dark ? 'bg-gray-700' : 'bg-gray-50'}`}>
                   <div className="flex items-center justify-between mb-1">

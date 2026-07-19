@@ -45,3 +45,12 @@ body {
 .animate-slide-out-right {
   animation: slide-out-right 0.2s ease-in, fade-out 0.15s ease-in;
 }
+
+/* Ocultar scrollbar pero mantener scroll */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
